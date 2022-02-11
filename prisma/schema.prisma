@@ -11,13 +11,16 @@ datasource db {
 }
 
 model Courses {
-  id            String   @id @default(uuid())
-  name          String   @unique
-  description   String? //? no final coloca o atributo como opcional
-  duration      Int
-  created_at    DateTime @default(now())
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String? //? no final coloca o atributo como opcional
+  duration    Int
+  created_at  DateTime @default(now())
+
   teacher       Teachers @relation(fields: [fk_id_teacher], references: [id])
   fk_id_teacher String   @unique
+
+  books Books[]
 
   @@map("courses")
 }
@@ -28,4 +31,14 @@ model Teachers {
   course Courses?
 
   @@map("teachers")
+}
+
+model Books {
+  id   String @id @default(uuid())
+  name String @unique
+
+  course_id String
+  course    Courses @relation(fields: [course_id], references: [id])
+
+  @@map("books")
 }
